@@ -63,7 +63,7 @@
   async function sendImage(nomor, pesan, nama) {
     try {
       const [url, caption = ''] = pesan.split('|').map(s => s.trim());
-      const media = await MessageMedia.fromUrl(url);
+      const media = await MessageMedia.fromUrl(url, { unsafeMime: true });
       await client.sendMessage(formatTarget(nomor), media, {
         caption: personalize(caption, nama)
       });
