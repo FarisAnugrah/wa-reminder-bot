@@ -135,14 +135,18 @@ return [{ nomor: target, nama: found ? found.nama : '', grup: '' }];
       console.log(`\n⏰ [${currentTime}] Memproses jadwal → ${penerima}`);
       await broadcast(penerima, pesan, tipe, sheets);
       // Update status TERKIRIM di Sheets
-const rowIndex = rows.indexOf(row) + 4; // +4 karena data mulai baris 4
-await sheets.spreadsheets.values.update({
-  spreadsheetId: SPREADSHEET_ID,
-  range: `${SHEET_JADWAL}!F${rowIndex}`,
-  valueInputOption: 'RAW',
-  requestBody: { values: [['TERKIRIM']] }
-});
-console.log(`📝 Status baris ${rowIndex} diupdate → TERKIRIM`);
+try {
+  const rowIndex = rows.indexOf(row) + 4;
+  await sheets.spreadsheets.values.update({
+    spreadsheetId: SPREADSHEET_ID,
+    range: `${SHEET_JADWAL}!F${rowIndex}`,
+    valueInputOption: 'RAW',
+    requestBody: { values: [['TERKIRIM']] }
+  });
+  console.log(`📝 Status baris ${rowIndex} diupdate → TERKIRIM`);
+} catch (err) {
+  console.error('❌ Gagal update status:', err.message);
+}
     }
   }
 
