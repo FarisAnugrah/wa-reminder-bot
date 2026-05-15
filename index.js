@@ -91,8 +91,10 @@
       return filtered;
     }
 
-    // Nomor spesifik
-    return [{ nomor: target, nama: '', grup: '' }];
+    // Nomor spesifik — cari nama dari Daftar Penerima
+const semua = await getAllPenerima(sheets);
+const found = semua.find(p => p.nomor === target.trim());
+return [{ nomor: target, nama: found ? found.nama : '', grup: '' }];
   }
 
   async function broadcast(target, pesan, tipe, sheets) {
