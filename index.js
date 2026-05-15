@@ -126,33 +126,14 @@ return [{ nomor: target, nama: found ? found.nama : '', grup: '' }];
     try { rows = await getJadwal(sheets); }
     catch (err) { console.error('❌ Baca jadwal gagal:', err.message); return; }
 
-    for (const [index, row] of rows.entries()) {
-  const [tanggal, jam, penerima, pesan, tipe, status] = row;
+    for (const row of rows) {
+      const [tanggal, jam, penerima, pesan, tipe, status] = row;
+      if (!tanggal || !jam || !penerima || !pesan) continue;
+      if (status === 'TERKIRIM') continue;
+      if (tanggal.trim() !== todayDate || jam.trim() !== currentTime) continue;
 
-  if (!tanggal || !jam || !penerima || !pesan) continue;
-  if (status === 'TERKIRIM') continue;
-  if (tanggal.trim() !== todayDate || jam.trim() !== currentTime) continue;
-
-  console.log(`\n⏰ [${currentTime}] Memproses jadwal → ${penerima}`);
-
-  await broadcast(penerima, pesan, tipe, sheets);
-
-  // Update status
-  try {
-    const rowIndex = index + 4;
-
-    await sheets.spreadsheets.values.update({
-      spreadsheetId: SPREADSHEET_ID,
-      range: `${SHEET_JADWAL}!F${rowIndex}`,
-      valueInputOption: 'RAW',
-      requestBody: {
-        values: [['TERKIRIM']]
-      }
-    });
-  console.log(`📝 Status baris ${rowIndex} diupdate → TERKIRIM`);
-} catch (err) {
-  console.error('❌ Gagal update status:', err.message);
-}
+      console.log(`\n⏰ [${currentTime}] Memproses jadwal → ${penerima}`);
+      await broadcast(penerima, pesan, tipe, sheets);
     }
   }
 
