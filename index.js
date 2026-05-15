@@ -114,7 +114,7 @@
     const todayDate = now.toLocaleDateString('id-ID', {
       day: '2-digit', month: '2-digit', year: 'numeric'
     }).replace(/\//g, '/');
-    const currentTime = now.toTimeString().slice(0, 5);
+    const currentTime = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
 
     let sheets;
     try { sheets = await getSheets(); }
