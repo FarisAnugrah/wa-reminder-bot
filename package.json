@@ -1,0 +1,19 @@
+{
+  "name": "wa-reminder-bot",
+  "version": "1.0.0",
+  "description": "WhatsApp Reminder Bot - Otomatis kirim pesan dari Google Sheets",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "whatsapp-web.js": "^1.23.0",
+    "qrcode-terminal": "^0.12.0",
+    "googleapis": "^140.0.0",
+    "node-cron": "^3.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
