@@ -138,9 +138,12 @@ return [{ nomor: target, nama: found ? found.nama : '', grup: '' }];
   }
 
   const client = new Client({
-    authStrategy: new LocalAuth(),
-    puppeteer: { args: ['--no-sandbox', '--disable-setuid-sandbox'] },
-  });
+  authStrategy: new LocalAuth(),
+  puppeteer: {
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    protocolTimeout: 60000,
+  },
+});
 
   client.on('qr', (qr) => {
     console.log('\n📱 Scan QR Code ini dengan WhatsApp pengirim:\n');
