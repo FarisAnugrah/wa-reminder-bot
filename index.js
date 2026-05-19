@@ -150,12 +150,17 @@ return [{ nomor: target, nama: found ? found.nama : '', grup: '' }];
     qrcode.generate(qr, { small: true });
   });
 
-  client.on('ready', () => {
-    console.log('✅ WhatsApp terhubung!');
-    console.log('🤖 Bot aktif...\n');
+  let schedulerStarted = false;
+
+client.on('ready', () => {
+  console.log('✅ WhatsApp terhubung!');
+  console.log('🤖 Bot aktif...\n');
+  if (!schedulerStarted) {
     cron.schedule('* * * * *', () => checkAndSend());
     console.log('⏰ Scheduler aktif, cek jadwal setiap menit...\n');
-  });
+    schedulerStarted = true;
+  }
+});
 
   client.on('auth_failure', () => {
     console.error('❌ Autentikasi gagal. Hapus .wwebjs_auth lalu jalankan ulang.');
